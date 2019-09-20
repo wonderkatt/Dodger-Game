@@ -17,8 +17,7 @@ namespace WindowsFormsApp1
 
 
 
-        private List<Enemy> listOfEnemies = new List<Enemy>;
-
+        
 
 
 
@@ -29,12 +28,13 @@ namespace WindowsFormsApp1
 
             InitializeComponent();
             this.MaximumSize = new Size(900, 900);
-            
+            List<EnemyPicture> listOfEnemies = new List<EnemyPicture>();
             var player = new Player();
             var enemy = new Enemy(this);
             var PlayerController = new PlayerContoller(this, player, PlayerSprite);
+            var enemyPicture = new EnemyPicture(enemy);
             var enemyController = new EnemyController(this, enemy, listOfEnemies);
-            var EnemySpawner = new EnemySpawner(this, enemy);
+            var EnemySpawner = new EnemySpawner(this, enemy, enemyPicture, listOfEnemies);
             
         }
 

@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyController.cs" />
+    <Compile Include="EnemyPicture.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EnemySpawner.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

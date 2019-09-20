@@ -12,24 +12,29 @@ namespace WindowsFormsApp1
     {
         private GameWindow gameWindow;
         private Enemy enemy;
-       // private  List<Enemy> listOfEnemies;
+        private EnemyPicture enemyPicture;
+        private static int size;
+
+        
         private Timer spawnTimer; 
         Random random = new Random();
-      
+        private List<EnemyPicture> listOfEnemies;
 
-
-
-        public EnemySpawner(GameWindow gameWindow, Enemy enemy)
+        public EnemySpawner(GameWindow gameWindow, Enemy enemy, EnemyPicture enemyPicture, List<EnemyPicture> listOfEnemies)
         {
             this.gameWindow = gameWindow ?? throw new ArgumentNullException(nameof(gameWindow));
             this.enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
-           // listOfEnemies = new List<Enemy>();
+            this.enemyPicture = enemyPicture ?? throw new ArgumentNullException(nameof(enemyPicture));
+            this.listOfEnemies = listOfEnemies ?? throw new ArgumentNullException(nameof(listOfEnemies));
             spawnTimer = new Timer();
             spawnTimer.Interval = 50;
             spawnTimer.Enabled = true;
 
             SpawnEventHandler();  
         }
+
+        public static int Size { get { return size; } set { size = value; } }
+      
 
         private void SpawnEventHandler()
         {
@@ -39,44 +44,53 @@ namespace WindowsFormsApp1
 
         private void SpawnEnemy()
         {
-            int size = random.Next(20, 41);
-            
+            enemyPicture = new EnemyPicture(enemy);
 
-            
+            SetSize();
+            enemy.SpawnPoint = SetSpawnpointAndDirection();
 
-            enemy = new Enemy(gameWindow);
-            enemy.CreateEnemy(size, DecideSpawnPoint());
-            gameWindow.Controls.Add(enemy.enemyPicture);
-            listOfEnemies.Add(enemy);
+           
+
+            gameWindow.Controls.Add(enemyPicture);
+            listOfEnemies.Add(enemyPicture);
+           
+
         }
 
-        private Point DecideSpawnPoint()
+
+        private void SetSize()
         {
-            
-            
-            int spawnSide = random.Next(0,900);
+            int size = random.Next(20, 41);
+            Size = size;
+        }
+
+        private Point SetSpawnpointAndDirection()
+        {
+
+
+            int spawnSide = random.Next(0,3);
             int xCoordForSpawn = 0;
             int yCoordForSpawn = 0;
 
-            if (spawnSide < 300)
+            if (spawnSide == 0)
             {
-                yCoordForSpawn = random.Next(0, 450);
-                enemy.isMovingRight = true;
+                enemyPicture.IsMovingRight = true;
+                yCoordForSpawn = random.Next(0, 900);
                 Point spawnPoint = new Point(xCoordForSpawn, yCoordForSpawn);
                 return spawnPoint;
             }
-            else if (spawnSide > 599)
+            else if (spawnSide == 1)
             {
+                enemyPicture.IsMovingDown = true;
                 xCoordForSpawn = random.Next(0, 900);
-                enemy.isMovingDown = true;
                 Point spawnPoint = new Point(xCoordForSpawn, yCoordForSpawn);
                 return spawnPoint;
             }
             else 
             {
-                yCoordForSpawn = random.Next(0, 450);
+                enemyPicture.IsMovingLeft = true;
+                yCoordForSpawn = random.Next(0, 900);
                 xCoordForSpawn = 900;
-                enemy.isMovingLeft = true;
                 Point spawnPoint = new Point(xCoordForSpawn, yCoordForSpawn);
                 return spawnPoint;
             }
