@@ -6,38 +6,29 @@ using System.Drawing;
 
 namespace WindowsFormsApp1
 {
-    internal class EnemyController
+    class EnemyController
     {
-        private GameWindow gameWindow;
-        private Enemy enemy;
-        private List<EnemyPicture> listOfEnemies;
-        private Timer timer;
+        private readonly GameWindow gameWindow;
 
-        public EnemyController(GameWindow gameWindow, Enemy enemy, List<EnemyPicture> listOfEnemies)
+        public EnemyController(GameWindow gameWindow)
         {
-            this.gameWindow = gameWindow ?? throw new System.ArgumentNullException(nameof(gameWindow));
-            this.enemy = enemy ?? throw new System.ArgumentNullException(nameof(enemy));
-            this.listOfEnemies = listOfEnemies ?? throw new ArgumentNullException(nameof(listOfEnemies));
-            timer = new Timer();
-            timer.Interval = 1;
-            timer.Enabled = true;
-            
+            this.gameWindow = gameWindow ?? throw new ArgumentNullException(nameof(gameWindow));
 
-            MoveEnemyEventHandler();
+            EnemyEventHandler(gameWindow.masterTimer);
         }
 
-        private void MoveEnemyEventHandler()
+        private void EnemyEventHandler(Timer timer)
         {
             timer.Tick += (sender, e) => MoveEnemy();
-
-            timer.Tick += (sender, e) => RemoveEnemy();
+            timer.Tick += (sender, e) => TimeToLive();
         }
 
-        private void RemoveEnemy()
+        private void TimeToLive()
         {
+            List<EnemyPicture> listOfEnemies = EnemySpawner.GetListOfEnemies();
             foreach (var enemy in listOfEnemies)
             {
-                if (enemy.DisposeCounter == 200)
+                if (enemy.LifeCounter > 450)
                 {
                     enemy.Dispose();
                 }
@@ -46,23 +37,23 @@ namespace WindowsFormsApp1
 
         private void MoveEnemy()
         {
-           
             
-           foreach (var enemy in listOfEnemies)
-           {
-                if (enemy.IsMovingRight == true && enemy.IsMovingDown != true && enemy.IsMovingLeft != true)
-                {
-                    enemy.Location = new Point(enemy.Location.X + 4, enemy.Location.Y);
-                }
-                else if (enemy.IsMovingRight != true && enemy.IsMovingDown != true && enemy.IsMovingLeft == true)
-                {
-                    enemy.Location = new Point(enemy.Location.X - 4, enemy.Location.Y);
-                }
-               else if (enemy.IsMovingRight != true && enemy.IsMovingDown == true && enemy.IsMovingLeft != true)
-                {
-                    enemy.Location = new Point(enemy.Location.X, enemy.Location.Y + 4);
-                }
-           }
+            List<EnemyPicture> listOfEnemiesMovingRight = EnemySpawner.GetListOfEnemiesMovingRight();
+            List<EnemyPicture> listOfEnemiesMovingLeft = EnemySpawner.GetListOfEnemiesMovingLeft();
+            List<EnemyPicture> listOfEnemiesMovingDown = EnemySpawner.GetListOfEnemiesMovingDown();
+
+            foreach (var enemy in listOfEnemiesMovingRight)
+            {
+                enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed, enemy.Location.Y);
+            }
+            foreach (var enemy in listOfEnemiesMovingLeft)
+            {
+                enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed * -1, enemy.Location.Y);
+            }
+            foreach (var enemy in listOfEnemiesMovingDown)
+            {
+                enemy.Location = new Point(enemy.Location.X, enemy.Location.Y + Enemy.MoveSpeed);
+            }
         }
     }
 }

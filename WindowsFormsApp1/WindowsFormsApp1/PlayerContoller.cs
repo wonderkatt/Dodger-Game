@@ -14,36 +14,30 @@ namespace WindowsFormsApp1
     class PlayerContoller
     {
         private GameWindow gameWindow;
-        private Player player;
-        private Timer playerTimer;
-        private PictureBox playerSprite;
         private static int setxAxisDirection = 0;
         private static int setYAxisDirection = 0;
         private static int upMove = 0;
         private static int downMove = 0;
         private static int rightMove = 0;
         private static int leftMove = 0;
+        private readonly PictureBox playerSprite;
 
-
-        public PlayerContoller(GameWindow gameWindow, Player player, PictureBox playerSprite)
+        public PlayerContoller(GameWindow gameWindow, PictureBox playerSprite)
         {
-
-
-            playerTimer = new Timer();
-            playerTimer.Interval = 1;
-            playerTimer.Enabled = true;
             this.gameWindow = gameWindow ?? throw new ArgumentNullException(nameof(gameWindow));
-            this.player = player ?? throw new ArgumentNullException(nameof(player));
             this.playerSprite = playerSprite ?? throw new ArgumentNullException(nameof(playerSprite));
-            ConfigureEventHandler(playerTimer);
+
+
+            ConfigureEventHandler(gameWindow.masterTimer);
+            
         }
 
 
         private void ConfigureEventHandler(Timer timer)
         {
-            playerTimer.Tick += (sender, e) => MovePlayer();
-            gameWindow.KeyDown += (sender, e) => PlayerInputKey(e);
-            gameWindow.KeyUp += (sender, e) => PlayerReleaseKey(e);   
+            timer.Tick += (sender, e) => MovePlayer();
+           gameWindow.KeyDown += (sender, e) => PlayerInputKey(e);
+           gameWindow.KeyUp += (sender, e) => PlayerReleaseKey(e);   
         }
 
         private void PlayerReleaseKey(KeyEventArgs e)
@@ -72,19 +66,19 @@ namespace WindowsFormsApp1
 
             if(e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
             {
-                rightMove = Player.moveMentSpeed;
+                rightMove = Player.MoveSpeed;
             }
             else if(e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
             {
-                leftMove = Player.moveMentSpeed * -1;
+                leftMove = Player.MoveSpeed * -1;
             }
             else if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
             {
-                upMove = Player.moveMentSpeed * -1;
+                upMove = Player.MoveSpeed * -1;
             }
             else if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
             {
-                downMove = Player.moveMentSpeed;
+                downMove = Player.MoveSpeed;
             }
 
 
@@ -92,6 +86,22 @@ namespace WindowsFormsApp1
 
         private void MovePlayer()
         {
+            if(playerSprite.Location.X < 0)
+            {
+                leftMove = 0;
+            }
+            else if(playerSprite.Right > 883)
+            {
+                rightMove = 0;
+            }
+            else if(playerSprite.Location.Y < 0)
+            {
+                upMove = 0;
+            }
+            else if(playerSprite.Bottom > 860)
+            {
+                downMove = 0;
+            }
             setxAxisDirection = rightMove + leftMove;
             setYAxisDirection = upMove + downMove;
             playerSprite.Location = new Point(playerSprite.Location.X + setxAxisDirection, playerSprite.Location.Y + setYAxisDirection);

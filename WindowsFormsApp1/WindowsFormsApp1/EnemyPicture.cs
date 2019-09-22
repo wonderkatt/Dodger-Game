@@ -10,40 +10,46 @@ namespace WindowsFormsApp1
 {
     class EnemyPicture : PictureBox
     {
-        
-        Timer timer = new Timer();
-        private int disposeCounter;
+        private readonly GameWindow gameWindow;
+        private int lifeCounter = 0;
 
-        public EnemyPicture(Enemy enemy)
+        public EnemyPicture(GameWindow gameWindow)
         {
+            this.gameWindow = gameWindow ?? throw new ArgumentNullException(nameof(gameWindow));
+            gameWindow.masterTimer.Tick += (sender, e) => CheckForCollision();
+            gameWindow.masterTimer.Tick += (sender, e) => IncrementLifeCounter();
 
-            IsMovingDown = false;
-            IsMovingLeft = false;
-            isMovingRight = false;
-            Point spawnPoint = enemy.SpawnPoint;
-            int size = EnemySpawner.Size;
             BackColor = Color.Black;
-            Size = new Size(size, size);
-            Location = spawnPoint;
-            timer.Interval = 1;
-            timer.Enabled = true;
-
-            timer.Tick += (sender, e) => IncrementCounter(this);
+            Size = new Size(40, 40);
+            lifeCounter = 0;
+            Location = EnemySpawner.SpawnPoint;
 
         }
 
-        public int DisposeCounter { get { return disposeCounter; } set { disposeCounter = value; } }
+        public int LifeCounter { get { return lifeCounter; } private set { lifeCounter = value; } }
 
-        private void IncrementCounter(EnemyPicture enemyPicture)
+     private void IncrementLifeCounter()
+     {
+            lifeCounter++;
+     }
+
+        private void CheckForCollision()
         {
-            DisposeCounter = DisposeCounter + 1;
+            var listOfEnemies = EnemySpawner.GetListOfEnemies();
+            var listOfPlayers = PlayerSprite.GetPlayerSprites();
+            var player = listOfPlayers.First<PlayerSprite>();
+            foreach (var enemyPicture in listOfEnemies)
+            {
+                if(enemyPicture.Bounds.IntersectsWith(player.Bounds) && enemyPicture.Visible)
+                {
+                   
+                    enemyPicture.Dispose();
+                    Player.Health = Player.Health - 1;
+                    
+                }
+                
+              
+            }
         }
-        private bool isMovingRight;
-        private bool isMovingLeft;
-        private bool isMovingDown;
-
-        public bool IsMovingRight { get { return isMovingRight; } set { isMovingRight = value; } }
-        public bool IsMovingLeft { get { return isMovingLeft; } set { isMovingLeft = value; } }
-        public bool IsMovingDown { get { return isMovingDown; } set { isMovingDown = value; } }
     }
 }

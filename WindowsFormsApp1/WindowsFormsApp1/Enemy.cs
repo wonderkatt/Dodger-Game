@@ -8,17 +8,18 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    class Enemy
+    public class Enemy
     {
-        Point spawnPoint;
+        private GameWindow gameWindow;
+
         public Enemy(GameWindow gameWindow)
         {
-            
+            this.gameWindow = gameWindow ?? throw new ArgumentNullException(nameof(gameWindow));
+            MoveSpeed = 2;
+            Damage = 1;
         }
 
-        public Point SpawnPoint { get { return spawnPoint; } set { spawnPoint = value; } }
-    
-
-       
+        public static int MoveSpeed { get; set; }
+        public static int Damage { get; set; }
     }
 }

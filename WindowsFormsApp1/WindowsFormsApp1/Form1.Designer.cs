@@ -28,20 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PlayerSprite = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerSprite)).BeginInit();
+            this.health = new System.Windows.Forms.Label();
+            this.scorelabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // PlayerSprite
+            // health
             // 
-            this.PlayerSprite.BackColor = System.Drawing.Color.Transparent;
-            this.PlayerSprite.Image = global::WindowsFormsApp1.Properties.Resources._14397211_10154494910549383_438704762_n;
-            this.PlayerSprite.Location = new System.Drawing.Point(0, 0);
-            this.PlayerSprite.Name = "PlayerSprite";
-            this.PlayerSprite.Size = new System.Drawing.Size(73, 120);
-            this.PlayerSprite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerSprite.TabIndex = 0;
-            this.PlayerSprite.TabStop = false;
+            this.health.AutoSize = true;
+            this.health.Location = new System.Drawing.Point(662, 38);
+            this.health.Name = "health";
+            this.health.Size = new System.Drawing.Size(35, 13);
+            this.health.TabIndex = 1;
+            this.health.Text = "label1";
+            // 
+            // scorelabel
+            // 
+            this.scorelabel.AutoSize = true;
+            this.scorelabel.Location = new System.Drawing.Point(197, 38);
+            this.scorelabel.Name = "scorelabel";
+            this.scorelabel.Size = new System.Drawing.Size(35, 13);
+            this.scorelabel.TabIndex = 2;
+            this.scorelabel.Text = "label1";
             // 
             // GameWindow
             // 
@@ -49,16 +56,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.ClientSize = new System.Drawing.Size(754, 426);
-            this.Controls.Add(this.PlayerSprite);
+            this.Controls.Add(this.scorelabel);
+            this.Controls.Add(this.health);
             this.Name = "GameWindow";
             this.Text = "GameWindow";
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerSprite)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox PlayerSprite;
+        public System.Windows.Forms.Label health;
+        private System.Windows.Forms.Label scorelabel;
     }
 }
 
