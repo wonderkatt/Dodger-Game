@@ -42,18 +42,30 @@ namespace WindowsFormsApp1
             List<EnemyPicture> listOfEnemiesMovingLeft = EnemySpawner.GetListOfEnemiesMovingLeft();
             List<EnemyPicture> listOfEnemiesMovingDown = EnemySpawner.GetListOfEnemiesMovingDown();
 
-            foreach (var enemy in listOfEnemiesMovingRight)
+            for (int i = 0; i < listOfEnemiesMovingRight.Count; i++)
             {
-                enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed, enemy.Location.Y);
+                listOfEnemiesMovingRight[i].Location = new Point(listOfEnemiesMovingRight[i].Location.X + Enemy.MoveSpeed, listOfEnemiesMovingRight[i].Location.Y);
             }
-            foreach (var enemy in listOfEnemiesMovingLeft)
+            // foreach (var enemy in listOfEnemiesMovingRight)
+            // {
+            //     enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed, enemy.Location.Y);
+            // }
+            for (int i = 0; i < listOfEnemiesMovingLeft.Count; i++)
             {
-                enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed * -1, enemy.Location.Y);
+                listOfEnemiesMovingLeft[i].Location = new Point(listOfEnemiesMovingLeft[i].Location.X + Enemy.MoveSpeed * -1, listOfEnemiesMovingLeft[i].Location.Y);
             }
-            foreach (var enemy in listOfEnemiesMovingDown)
+            // foreach (var enemy in listOfEnemiesMovingLeft)
+            // {
+            //     enemy.Location = new Point(enemy.Location.X + Enemy.MoveSpeed * -1, enemy.Location.Y);
+            // }
+            for (int i = 0; i < listOfEnemiesMovingDown.Count; i++)
             {
-                enemy.Location = new Point(enemy.Location.X, enemy.Location.Y + Enemy.MoveSpeed);
+                listOfEnemiesMovingDown[i].Location = new Point(listOfEnemiesMovingDown[i].Location.X, listOfEnemiesMovingDown[i].Location.Y + Enemy.MoveSpeed);
             }
+           // foreach (var enemy in listOfEnemiesMovingDown)
+           // {
+           //     enemy.Location = new Point(enemy.Location.X, enemy.Location.Y + Enemy.MoveSpeed);
+           // }
         }
     }
 }
